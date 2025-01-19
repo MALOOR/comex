@@ -14,6 +14,9 @@ public class Pedido {
 
     private LocalDate fecha;
 
+
+
+
     public Pedido(String categoria, String producto, String cliente, BigDecimal precio, int cantidad, LocalDate fecha) {
         this.categoria = categoria;
         this.producto = producto;
@@ -47,6 +50,21 @@ public class Pedido {
         return fecha;
     }
 
+    //Metodo que encapsula la logica del valor total para unificar responsabilidades.
+    public BigDecimal getValorTotal() {
+        return this.precio.multiply(BigDecimal.valueOf(cantidad));
+
+    }
+    //Metodo que compara cual es el pedido mas barato, refactorizando codigo de acuerdo a los principios SOLID
+    public boolean isMasBaratoQue(Pedido otroPedido){
+        return this.getValorTotal().compareTo(otroPedido.getValorTotal()) > 0;
+    }
+
+    //Metodo que compara cual es el mas ba entre dos pedidos, refactorizando codigo de acuerdo a los principios SOLID
+    public boolean isMasCaroQue(Pedido otroPedido){
+        return this.getValorTotal().compareTo(otroPedido.getValorTotal())<0;
+    }
+
     @Override
     public String toString() {
         return "Pedido{" +
@@ -58,5 +76,6 @@ public class Pedido {
                 ", fecha=" + fecha +
                 '}';
     }
+
 
 }
