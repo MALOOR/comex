@@ -1,6 +1,7 @@
 package com.alura.comex;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 
 public class InformeSintetico {
@@ -54,6 +55,28 @@ public class InformeSintetico {
         this.pedidoMasBarato = null;
         this.pedidoMasCaro = null;
         this.totalDeCategorias = 0;
+
+
+        //Refactorización del total de pedidos realizados en el informe sintétic
+
+        this.totalDePedidosRealizados = pedidos.size();
+
+        //Refactorización del total de productos vendidos en el informe sintético
+        this.totalDeProductosVendidos = pedidos.stream().mapToInt(Pedido::getCantidad).sum();
+
+        //Refactorización del monto de ventas en el informe sintético
+
+        this.monteDeVentas = pedidos.stream().map(Pedido::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        //Refactorización de categorías procesadas en el informe sintético
+
+        this.totalDeCategorias = (int)pedidos.stream().map(Pedido::getCategoria).distinct().count();
+
+        //Refactorización del pedido más barato y más caro en el informe sintético
+
+        this.pedidoMasBarato = pedidos.stream().min(Comparator.comparing(Pedido::getValorTotal)).orElse(null);
+
+        this.pedidoMasCaro = pedidos.stream().max(Comparator.comparing(Pedido::getValorTotal)).orElse(null);
 
 
     }
